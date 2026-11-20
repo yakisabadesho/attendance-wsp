@@ -65,10 +65,11 @@ public class ButtonWatcher {
                 System.out.println("COULD NOT CHANGE THE LANGUAGE TO RUSSIAN");
             }
             int clickedCount = 0;
+            int refreshRate = Integer.parseInt(args[2]) * 10;
             while (running) {// Contains a bunch of failsafes, if linktext fails, then everything is up to css selectors.
                 // The first css selector is the one where there's only 1 button on a page
                 // The second and third css selectors are when there's 2 buttons, check the nth child notation at the end of them
-                for (int i = 0; i < 200 && running; i++) {
+                for (int i = 0; i < refreshRate && running; i++) {
                     Thread.sleep(100);
                 }
                 if (!running) break;

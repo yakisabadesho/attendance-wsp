@@ -3,10 +3,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.PasswordField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 
@@ -17,6 +19,14 @@ public class ButtonWatcherUI extends Application {
     @Override
     public void start(Stage stage) {
 
+        var iconStream = getClass().getResourceAsStream("/favicon.png");
+        if (iconStream != null) {
+            Image icon = new Image(iconStream);
+            stage.getIcons().add(icon);
+        } else {
+            System.out.println("Could not find favicon.png!");
+        }
+
         Label title = new Label("Credentials⤵");
 
         TextField input1 = new TextField();
@@ -25,16 +35,22 @@ public class ButtonWatcherUI extends Application {
         PasswordField input2 = new PasswordField();
         input2.setPromptText("Password:");
 
+        TextField input3 = new TextField("20");
+        input3.setPromptText("Refresh Rate:");
+
         Button startButton = new Button("Start");
         Button stopButton = new Button("Stop");
         stopButton.setDisable(true);
 
         Label status = new Label("Inactive");
 
-        Label desc = new Label("Refreshes every 20 seconds.");
+        Label desc2 = new Label("REQUIRES CHROME. Don't panic if chrome doesn't start, it needs some time to download " +
+                "the driver on the initial launch. Restart the program/End the task if needed and try again.");
+        desc2.setWrapText(true);
+        desc2.setTextAlignment(TextAlignment.CENTER);
 
         startButton.setOnAction(event -> {
-            String[] args = {input1.getText(), input2.getText()};
+            String[] args = {input1.getText(), input2.getText(), input3.getText()};
 
             status.setText("Working");
             startButton.setDisable(true);
@@ -64,19 +80,22 @@ public class ButtonWatcherUI extends Application {
                 title,
                 input1,
                 input2,
+                input3,
                 startButton,
                 new Region(),
                 stopButton,
                 status,
                 new Region(),
                 new Region(),
-                desc
+                desc2
         );
         layout.setAlignment(Pos.CENTER);
         input1.setPrefWidth(200);
         input1.setMaxWidth(200);
         input2.setPrefWidth(200);
         input2.setMaxWidth(200);
+        input3.setPrefWidth(50);
+        input3.setMaxWidth(200);
         title.setScaleY(2);
         title.setScaleX(2);
         startButton.setScaleX(1.5);

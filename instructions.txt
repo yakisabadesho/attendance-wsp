@@ -1,0 +1,24 @@
+You can use lightweight HTTP requests in Python (with requests or httpx) or a browser userscript instead of Selenium to automate button clicks without a heavy browser. Using Burp Suite passively to watch what happens when you click that button is actually the standard way to figure out how to automate it.
+
+1. Replicate the Underlying HTTP Request (Lightest Option)
+
+When you click a button on a website, your browser usually sends a background HTTP request (like a POST or GET call) to an internal endpoint.
+• Capture the request: Click the button once while Burp Suite (or your browser's built-in DevTools Network tab) is recording, then find the specific request it triggered.
+• Copy as code: In Burp Suite or Chrome DevTools, right-click that request and select Copy as cURL (or use Burp's "Copy as requests" extension) to convert it straight into a lightweight Python script.
+• Handle authentication: Include the required Cookie or Authorization headers from your session so the server recognizes your logged-in state.
+• Pros and cons: This uses almost zero RAM and runs in milliseconds, though it can be tricky if the site uses complex anti-bot tokens or dynamically generated signatures.
+
+2. Run a Userscript Inside Your Existing Browser
+
+If the button triggers complex JavaScript or relies on tokens that are hard to replicate outside a real browser, run a small script directly on the page.
+• Install a manager: Add a lightweight extension like Tampermonkey or Violentmonkey to your regular browser.
+• Automate the click: Write a few lines of JavaScript (e.g., document.querySelector('#my-button').click()) set to run on a timer or when specific elements load.
+• Pros and cons: It avoids launching a separate headless browser and bypasses most anti-bot checks because it runs in your real session, though your browser tab must stay open.
+
+3. Use Lightweight Browser Automation
+
+If you still need a standalone script that renders JavaScript without Selenium's heavy setup, consider modern alternatives.
+• Playwright or Puppeteer: Both are faster and easier to manage than Selenium, and they can connect to an existing browser profile or run in lightweight headless modes.
+• curl_cffi (Python): If you go the pure HTTP route but get blocked by TLS fingerprinting (like Cloudflare), curl_cffi mimics real browser TLS handshakes without opening a browser.
+Keep in mind that automating actions on websites without a public API often violates their Terms of Service, so add reasonable delays between requests to avoid rate limits or account bans.
+Would you like help converting a captured request into a Python script, or does the button rely on complex authentication or anti-bot checks?
